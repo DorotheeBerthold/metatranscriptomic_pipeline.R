@@ -3,7 +3,7 @@
 # Generate database for host (mouse DNA) sequences
 ###########################################################################################
 
-# Optional: DB from 04 & 05 could be combined with cat UniVec_Core mouse_cds.fa > contaminants.fa
+# Optional: DB from 03 & 04 could be combined with cat UniVec_Core mouse_cds.fa > contaminants.fa
 # --> however then hard to distinguish how many reads came from host
 
 # Here, we use Ensembl as DB for mouse DNA sequences
