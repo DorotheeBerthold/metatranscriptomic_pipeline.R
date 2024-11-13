@@ -7,7 +7,7 @@
 
 vsearch --fastq_filter mouse1_mouse_blat.fastq --fastaout mouse1_mouse_blate.fasta
 
-# PACKAGE: Infernal
+# PACKAGE: Infernal (http://infernal.janelia.org/)
 # -o: infernal output log file
 # --tblout: simple tabular output file
 # --noali: omit alignment section --> greatly reduced output volume
