@@ -28,8 +28,11 @@ bwa mem -t 4 mouse1_contigs.fasta mouse1_unique_mRNA_deduplicated.fastq > mouse1
 # Run small python script to extract unmapped reads & generate mapping table for each contig
 ###########################################################################################
 
+# Activate permission
+chmod +x 4_Contig_Map_DB.py
+
 # Command input: 5_Contig_Map.py <Reads_Used_In_Alignment> <Output_SAM_From_BWA> \
 # <Output_File_For_Unassembed_Reads> <Output_File_For_Contig_Map>
 
-./5_Contig_Map.py mouse1_unique_mRNA_deduplicated.fastq mouse1_contigs.sam \
+./4_Contig_Map_DB.py mouse1_unique_mRNA_deduplicated.fastq mouse1_contigs.sam \
 mouse1_unassembled.fastq mouse1_contigs_map.tsv
