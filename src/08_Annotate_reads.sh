@@ -8,7 +8,12 @@
 # microbial genome database curated from NCBI: microbial_all_cds.fasta (9GB)
 # followed by BLAT (as in 04 & 05) to reduce using DIAMOND which uses much larger DB (>60GB)
 
-# Building the microbial genome database
+# Get all bacterial sequences from NCBI & concatenate them into a single file
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/Bacteria/all.ffn.tar.gz
+tar -xzvf all.ffn.tar.gz
+cat *.ffn > microbial_all_cds.fasta
+
+# Index the microbial genome database
 bwa index -a bwtsw microbial_all_cds.fasta
 samtools faidx microbial_all_cds.fasta
 
@@ -46,9 +51,6 @@ python blast_to_SAM.py mouse1_contigs_bwa_blat.blatout mouse1_contigs_annotation
 
 python blast_to_SAM.py mouse1_unassembled_bwa_blat.blatout mouse1_unassembled_annotation_bwa_blat.sam mouse1_unassembled_bwa.fasta
 
-
-
-
 # Run small python script to extract high confidence alignments
 ###########################################################################################
 
@@ -73,8 +75,18 @@ mouse1_unassembled.fastq mouse1_unassembled_annotation_bwa_blat.sam mouse1_unass
 # DIAMOND is less prone to sequence-changes between strains for annotation
 # Uses much larger DB based on non-redundant (NR) proteins
 
+# Get the database
+wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/nr.gz
+
+# uncurl
+curl -O ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/nr.gz
+gunzip nr.gz
+
 # Build NR database
-#diamond makedb -p 8 --in nr -d nr
+# -p 8: This specifies the number of threads to use (in this case, 8 threads).
+# --in nr: This specifies the input FASTA file (nr).
+# -d nr: This specifies the name of the DIAMOND database output (nr).
+diamond makedb -p 8 --in nr -d nr
 
 # PACKAGE: DIAMOND (https://github.com/bbuchfink/diamond)
 # -p: Number of threads to use in the search is 4.
