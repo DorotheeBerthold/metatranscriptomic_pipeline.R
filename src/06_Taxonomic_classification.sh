@@ -1,19 +1,28 @@
 ### Infer origins of mRNA reads
 
 # Kaiju generation of taxonomic classifications using proGenomes DB
+# SUBMIT VIA EULER!!
 ###########################################################################################
 
 # PACKAGE: Kaiju (https://github.com/bioinformatics-centre/kaiju)
+# -s: progenomes: precompiled list of prokaryotic genomes
+
+# Generate database
+mkdir kaijudb
+cd kaijudb
+kaiju-makedb -s progenomes
+
+cd ..
+
+# Generation of taxonomic classification
 # -t: hierarchical representation of taxonomy IDs
 # -f: precomputed index for kaiju
 # -i: input reads
 # -z: number of threads supported on your system
 # -o: output file for kaiju taxonomic classifications
 
-# Generation of taxonomic classification
-
-kaiju -t nodes.dmp \
--f kaiju_db.fmi \
+kaiju -t kaijudb/nodes.dmp \
+-f kaijudb/kaiju_db.fmi \
 -i mouse1_mRNA.fastq \
 -z 4 \
 -o mouse1_classification.tsv
@@ -50,6 +59,28 @@ mouse1_classification_genus.tsv
 
 
 # Create overview pie chart with Krona
+###########################################################################################
+
+# Create output file readable by Krona with Kaiju
+kaiju2krona \
+-t nodes.dmp \
+-n names.dmp \
+-i mouse1_classification_genus.tsv \
+-o mouse1_classification_Krona.tsv
+
+
+# PACKAGE: Krona (https://github.com/marbl/Krona/wiki)
+# Install Krona
+tar -xzf precomputed_files.tar.gz KronaTools
+sudo KronaTools/install.pl
+
+# Run Krona
+# -o: output file (html)
+# input file (output from kaiju2krona)
+KronaTools/scripts/ImportText.pl \
+-o mouse1_classification.html \
+mouse1_classification_Krona.tsv
+
 ###########################################################################################
 
 # Create output file readable by Krona with Kaiju
